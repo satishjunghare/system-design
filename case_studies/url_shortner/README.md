@@ -28,7 +28,48 @@ Design a scalable url shortner service platform like bitly.com or tinyurl.com. I
 * Service should provide REST API so that customers can integrate with other applications.
 
 
+### Capacity Estimation and Constraints in URL Shortening Service
+Now we know our system will generate around 100 millions short urls per month and on this basis we have to estimate following things...
+* Throughput ( QPS for read and write queries )
+* What will be the ratio of Read/Write
+* Expected latency from the system
+* Storage estimation
+* Trafic estimation for both Read/Write queries
+* Memory estimation
+  * If we are using cache, then how much data we are going to store in cache
+  * How much data we want to store in persistent storage (Disk/SSD)?
+  * How much Memory(Ram) we require to achieve this?
+
+#### Trafic Estimation Of Write Operations:
+We have considered that system will generate 100 Millions of records per month and we are going to store that much records for next 100 years.
+
+**Write Requests Estimation**
+**Per second:** 100 Millions / (30 Days * 24 Hours * 3600 Seconds) = 40 URLs/Second
+**For 1 month:** 100 Millions
+**For 1 year:** 100 Millions * 12 Months = 1.2 Billions
+**For 100 years:** 1.2 Billions * 100 Years = 120 Billions
+
+
+#### Storage Estimation:
+Here each write request will genrate one short url to be store in persistent storage for long time. Lets assume each record takes nearby 500 Bytes of space in storage. Then how much storage capacity we required to store for different time span?
+
+**For 1 month:** 100 Millions * 500 Bytes = 50GB
+**For 1 year:** 50GB * 12 Months = 600GB
+**For 100 years:** 600GB * 100 Years = 60TB
+
+These amount of storage capacity we will require to store records. As soon as we store single url record, multiple users are going to access that short url. Here we store once but access multiple times by multiple users. Therefore the trafic of reading operation is always going to higher than write operation.
+
+#### Trafic Estimation Of Read Requests
+Lets assume 100 users are going to read a single url, so the number of total urls will be redirect/read per second is **(100*40) = 4000/sec**
+
+It would be always bad idea if we are going to send such a huge trafic to the persistent database to fetch the records every time. When the trafic in a perticular URL is very high, system should send them to the cache memory(since cache memory is faster) to read. Before start using memory, we need to have clear idea on how much data we are going to store in memory.
+
+#### Memory Estimation:
+
+
+
 ### References:
+
 System Design – URL Shortening Service
 https://www.geeksforgeeks.org/system-design-url-shortening-service
 
