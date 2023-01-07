@@ -6,7 +6,7 @@ Design a scalable url shortner service platform like bitly.com or tinyurl.com. I
 **Ans:** It should remain in system forever.
 
 **Can use create their custom random string for url? What will be maximum length of random string in url?**
-**Ans:** Yes, customer can create their own random string in url with maximum limit of 16 character.
+**Ans:** Yes, customer can create their own random string in url with the total maximum length of url will be 16 character.
 
 **How many url shortning requests expected per month?**
 **Ans:** On average 100 million per month.
@@ -14,18 +14,18 @@ Design a scalable url shortner service platform like bitly.com or tinyurl.com. I
 **Do we expect to provide metrics like analysis of per url**
 **Ans:** Yes
 
-### Requirements
+### Functional Requirements
 * After giving long URL, service should generate a short & unique random alias for it.
 * When visit a short URL, service should redirect to the long URL.
-* QR code should generate while creating short url.
+* QR code should generate while creating a short url.
 * System should persist url forever.
 * Shortened link should be as small as possible & should not be guessable.
 * Analytics dashboard for monitoring purpose.
+* Service should provide REST API so that customers can integrate with other applications.
 
 ### Non-Functional Requirements
 * The system should be highly available. Because in case service goes down, all the url redirection will fail. The requests comming to the system should be succeed 99.99%.
 * Redirection to the long URL should be happen with minimum latency.
-* Service should provide REST API so that customers can integrate with other applications.
 
 
 ### Capacity Estimation and Constraints in URL Shortening Service
@@ -66,6 +66,8 @@ It would be always bad idea if we are going to send such a huge trafic to the pe
 
 #### Memory Estimation:
 
+
+#### Bandwidth Estimation:
 
 
 ### References:
